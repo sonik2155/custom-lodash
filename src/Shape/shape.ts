@@ -1,83 +1,83 @@
-class Shape {
-    public a: number;
-    public b: number;
-    constructor(a: number, b: number) {
-        this.a = a;
-        this.b = b;
-    }
-
-    public draw(): number[] {
-        return [this.a, this.b];
-    }
-    public calculateSquare(): number {
-        return this.a + this.b
-    }
+interface Shape {
+     a?: number[];
+     b?: number[];
+     c?: number[];
+     d?: number[];
 }
 
-class Circle extends Shape {
+class Circle implements Shape {
     public radius: number;
-    public c: number;
-    public d: number;
-    constructor(a: number, b: number, radius: number, d: number, c: number) {
-    super(a, b);
+    public a: number[];
+    constructor(radius: number, a: number[]) {
     this.radius = radius;
-    this.d = d;
-    this.c = c;
+    this.a = a;
     }
 
     public calculateSquare(): number {
-    const pi = Math.PI
+    const pi = Math.PI;
     return Math.pow(this.radius, 2,) * pi;
     }
 
     public draw(): number[] {
-    return [this.a, this.b, this.c, this.d, this.radius]
+    return [this.a[0], this.a[1], this.radius]
     }
 }
 
-class Rectangle extends Shape {
-    public d: number;
-    public e: number;
-    constructor(a: number, b: number, d: number, e: number) {
-        super(a, b);
+class Rectangle implements Shape {
+    public sideA: number;
+    public sideB: number;
+     a: number[];
+     b: number[];
+     c: number[];
+     d: number[];
+    constructor(a:number[], b:number[], c:number[], d:number[]) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
         this.d = d;
-        this.e = e;
-        this.a = this.d;
-        this.b = this.e;
+        this.sideA = Math.abs(Math.sqrt(Math.pow((this.a[0]-this.b[0]),2) + Math.pow((this.a[1] - this.b[1]),2)));
+        this.sideB = Math.abs(Math.sqrt(Math.pow((this.a[0]-this.b[0]),2) + Math.pow((this.a[1] - this.b[1]),2)));
     }
 
     public calculateSquare(): number {
-        return this.a * this.b
+    return this.sideA * this.sideB
     }
 
     public draw(): number[] {
-        return [this.b, this.a, this.d, this.e]
+        return [this.sideA, this.sideA, this.sideB, this.sideB]
     }
 }
 
-class Triangle extends Shape {
-    public height: number;
-    public z: number;
-    constructor(a: number, b: number, height: number, z: number) {
-        super(a, b);
-        this.height = height;
-        this.z = z;
+class Triangle implements Shape {
+    public sideA: number;
+    public sideB: number;
+    public sideC: number;
+     a: number[];
+     b: number[];
+     c: number[];
+    constructor(a:number[], b:number[], c:number[]) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.sideA = Math.abs(Math.sqrt(Math.pow((this.a[0] - this.b[0]),2) + Math.pow((this.a[1] - this.b[1]),2)));
+        this.sideB = Math.abs(Math.sqrt(Math.pow((this.a[0] - this.b[0]),2) + Math.pow((this.a[1] - this.b[1]),2)));
+        this.sideC = Math.abs(Math.sqrt(Math.pow((this.c[0] - this.b[0]),2) + Math.pow((this.c[1] - this.b[1]),2)));
     }
 
     public calculateSquare(): number {
-        return (this.a * 0.5) * this.height
+        const halfPerimeter = (this.sideA + this.sideB + this.sideC)/2;
+        return Math.sqrt(halfPerimeter * (halfPerimeter - this.sideA) * (halfPerimeter - this.sideB) * (halfPerimeter - this.sideC))
     }
 
     public draw(): number[] {
-        return [this.z, this.b, this.a];
+        return [this.sideA, this.sideB, this.sideC];
     }
 }
 
 function shape() {
-    const shape = new Shape(10, 10)
-    const circle = new Circle(shape.a, shape.b, 5, 10, 10);
-    const triangle = new Triangle(shape.a = 4, shape.b = 5, 5, 4);
-    const rectangle = new Rectangle( null, null, shape.a = 4, shape.b = 6,);
+    const circle = new Circle( 10, [1, 2]);
+    const triangle = new Triangle([2, 3], [6, 3], [2, 8],);
+    const rectangle = new Rectangle([2, 3], [6, 3], [3, 8], [6, 8]);
 
     const array = [ circle, triangle, rectangle ];
     let result: number[] = [];
@@ -85,8 +85,8 @@ function shape() {
 
     for (let i = 0; i < array.length; i++) {
         const arrayElement = array[i];
-        let res = arrayElement.calculateSquare();
-        let num = arrayElement.draw();
+        let res = arrayElement?.calculateSquare();
+        let num = arrayElement?.draw();
         result.push(res);
         nums.push(num)
     }

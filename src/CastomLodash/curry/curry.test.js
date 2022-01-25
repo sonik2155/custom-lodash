@@ -8,4 +8,5 @@ test('should return the new curried function', () => {
     const arr = [2, 3, 45, 74];
 
     expect(arr).toEqual(curried(2, 3, 45, 74))
-})
+});
+
