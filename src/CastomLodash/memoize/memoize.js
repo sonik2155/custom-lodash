@@ -1,20 +1,25 @@
-function memoize(func, resolver) {
-const cache = {};
-return function () {
-    if(cache[resolver]) {
-        return cache[resolver]
-    } else {
-        const res = func(resolver);
-        cache[resolver] = res;
-        return res
+function memoize(func, ...resolver) {
+    const memoized = function(...args) {
+        const key = resolver[0];
+        const cache = memoized.cache
+
+        if (cache.has(key)) {
+            return cache.get(key)
         }
+        const result = func.apply(this, args)
+        memoized.cache = cache.set(key, result) || cache
+        return result
     }
+    memoized.cache = new (memoize.Cache || Map)
+    return memoized
 }
-var object = { 'a': 1, 'b': 2 };
-var other = { 'c': 3, 'd': 4 };
 
-var values = memoize(object);
+let memoized = memoize(function(a, b, c) {
+    return a + b + c;
+});
 
 
-console.log(values())
+module.exports = {memoize}
+console.log(memoized(1, 2, 3))
+console.log(memoized(1, 2, 35));
 

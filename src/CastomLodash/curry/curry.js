@@ -1,35 +1,38 @@
-function curry(func, ...preset) {
+function curry(func, ...args) {
     let numOfArgs = func.length;
-    let _ = '_'
-    let nextPos = 0; 
-    
-    if (preset.filter(arg => arg !== _).length === numOfArgs) {
-      return func.apply(null, preset);
+    let nextPos = 0;
+
+    //check if there is enough valid arguments
+    if (args.length === numOfArgs) {
+        return func.apply(null, args);
     } else {
-      return function (...added) {
-        while(added.length > 0) {
-          let a = added.shift();
-         
-          while (preset[nextPos] !== _ && nextPos < preset.length) {
-            nextPos++
-          }
-          preset[nextPos] = a;
-          nextPos++;
-        } 
-        
-        return curry.call(null, func, ...preset);
-      }
+        //return the 'helper' function
+        return function (...added) {
+            //loop through and put added arguments to the args arguments
+            while(added.length > 0) {
+                let a = added.shift();
+                //get next placeholder position
+                while (nextPos < args.length) {
+                    nextPos++
+                }
+                //update the args
+                args[nextPos] = a;
+                nextPos++;
+            }
+            //bind with the updated args
+            return curry.call(null, func, ...args);
+        }
     }
 }
 
 module.exports = { curry }
 
-var abc = function(a, b, c, d) {
-    return [a, b, c, d];
+var abc = function(a, b, c) {
+    return [a, b, c];
   };
    
   var curried = curry(abc);
    
 
 
-console.log(curried(1)(2)(3)(5));
+console.log(curried(1)(2)(3));
