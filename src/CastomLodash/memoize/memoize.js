@@ -10,7 +10,7 @@ function memoize(func, ...resolver) {
         memoized.cache = cache.set(key, result) || cache
         return result
     }
-    memoized.cache = new (memoize.Cache || Map)
+    memoized.cache = new Map()
     return memoized
 }
 
@@ -22,4 +22,5 @@ let memoized = memoize(function(a, b, c) {
 module.exports = {memoize}
 console.log(memoized(1, 2, 3))
 console.log(memoized(1, 2, 35));
+console.log(memoized(1, 2, 357));
 
